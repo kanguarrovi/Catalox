@@ -1,2 +1,2 @@
 # Catalox
-A Vinyl and CDs calalox in Django
+A Vinyl and CDs calalox in Django-Python
