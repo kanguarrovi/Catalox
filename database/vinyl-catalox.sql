@@ -1,0 +1,10 @@
+CREATE TABLE Vinyl(
+	id INTEGER(11) PRIMARY KEY ASC,
+    image VARCHAR(255),
+    artist VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    price INT(11) NOT NULL,
+    saved BOOLEAN DEFAULT 0,
+    sold BOOLEAN DEFAULT 0,
+    info TEXT
+);
