@@ -9,12 +9,14 @@ app = Flask(__name__, static_url_path='/static')
 def index():
 	con = sql.connect("database/vinyl-catalox.db")
 	con.row_factory = sql.Row
-
 	cur = con.cursor()
 	cur.execute("select * from Vinyl")
-
 	albums = cur.fetchall()
-	return render_template('index.html',  albums = albums)
+	if len(albums) > 0:
+		return render_template('index.html', albums=albums)
+	else:
+		msg = 'No Articles found'
+		return render_template('index.html', msg=msg)
 
 if __name__ == '__main__':
 	app.run(debug=True)

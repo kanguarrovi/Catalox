@@ -20,9 +20,14 @@
 
     {% include 'includes/_navbar.html' %}
 
-    <!-- Page Content -->
-    {% block body %}
-    {% endblock %}
+    <div class="container">
+      <br>
+      {% include 'includes/_messages.html' %}
+
+      <!-- Page Content -->
+      {% block body %}
+      {% endblock %}
+    </div>
     
     <!-- Bootstrap core JavaScript -->
     <script src="static/vendor/jquery/jquery.min.js"></script>
