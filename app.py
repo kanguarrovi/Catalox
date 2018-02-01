@@ -81,6 +81,16 @@ def edit():
 		msg = 'No Articles found'
 		return render_template('edit.html', msg = msg)
 
+
+@app.route('/delete_album/<string:id>', methods=['POST'])
+def delete_album(id):
+	con = sql.connect("database/vinyl-catalox.db")
+	cur = con.cursor()
+	cur.execute("DELETE FROM vinyl WHERE id=" + id)
+	con.commit()
+	cur.close()
+	return redirect(url_for('edit'))
+
 if __name__ == '__main__':
 	app.secret_key = 'thereisnothingtodo'
 	app.run(debug=True)
