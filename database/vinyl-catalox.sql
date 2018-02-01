@@ -9,6 +9,4 @@ CREATE TABLE "Vinyl" (
 	"info" text NOT NULL DEFAULT ""
 );
 
-INSERT INTO "Vinyl" (artist, name, price)  
-VALUES ('Edge of Sanity','Crimson',27500);
-
+INSERT INTO "Vinyl" (artist, name, price) VALUES ('Edge of Sanity','Crimson',27500);

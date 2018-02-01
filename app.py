@@ -14,11 +14,22 @@ def index():
 	cur = con.cursor()
 	cur.execute("select * from Vinyl")
 	albums = cur.fetchall()
+	con.close()
 	if len(albums) > 0:
 		return render_template('index.html', albums=albums)
 	else:
 		msg = 'No Articles found'
 		return render_template('index.html', msg=msg)
+
+@app.route('/album/<string:id>')
+def album(id):
+	con = sql.connect("database/vinyl-catalox.db")
+	con.row_factory = sql.Row
+	cur = con.cursor()
+	cur.execute("SELECT * FROM Vinyl WHERE id =" + id)
+	album = cur.fetchone()
+	con.close()
+	return render_template('album.html', album = album)
 
 #Album form
 class AlbumForm(Form):
@@ -52,8 +63,23 @@ def add_album():
 			+ "'" + info + "')"
 		)
 		con.commit()
+		con.close()
 		return redirect(url_for('index'))
 	return render_template('add_album.html', form = form)
+
+@app.route('/edit')
+def edit():
+	con = sql.connect("database/vinyl-catalox.db")
+	con.row_factory = sql.Row
+	cur = con.cursor()
+	cur.execute("select * from Vinyl")
+	albums = cur.fetchall()
+	con.close()
+	if len(albums) > 0:
+		return render_template('edit.html', albums = albums)
+	else:
+		msg = 'No Articles found'
+		return render_template('edit.html', msg = msg)
 
 if __name__ == '__main__':
 	app.secret_key = 'thereisnothingtodo'
