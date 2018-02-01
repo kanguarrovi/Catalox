@@ -1,4 +1,14 @@
-CREATE TABLE Vinyl(id INTEGER PRIMARY KEY AUTOINCREMENT,image VARCHAR(255) NULL,artist VARCHAR(255) NOT NULL,name VARCHAR(255) NOT NULL,price INT(11) NOT NULL,saved BOOLEAN DEFAULT 0,sold BOOLEAN DEFAULT 0,info TEXT DEFAULT "");
+CREATE TABLE "Vinyl" (
+	"id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"image" varchar(100) NULL,
+	"artist" varchar(100) NOT NULL,
+	"name" varchar(100) NOT NULL,
+	"price" integer NOT NULL,
+	"saved" bool NOT NULL DEFAULT 0,
+	"sold" bool NOT NULL DEFAULT 0,
+	"info" text NOT NULL DEFAULT ""
+);
 
-INSERT INTO Vinyl(artist, name, price)  
-VALUES ("Edge of Sanity","Crimson","27500");
+INSERT INTO "Vinyl" (artist, name, price)  
+VALUES ('Edge of Sanity','Crimson',27500);
+
