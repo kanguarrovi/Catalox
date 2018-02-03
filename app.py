@@ -64,11 +64,11 @@ def add_album():
 		)
 		con.commit()
 		con.close()
-		return redirect(url_for('index'))
-	return render_template('add_album.html', form = form)
+		return redirect(url_for('dashboard'))
+	return render_template('album_form.html', action="Add", form = form)
 
-@app.route('/edit')
-def edit():
+@app.route('/dashboard')
+def dashboard():
 	con = sql.connect("database/vinyl-catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
@@ -76,10 +76,10 @@ def edit():
 	albums = cur.fetchall()
 	con.close()
 	if len(albums) > 0:
-		return render_template('edit.html', albums = albums)
+		return render_template('dashboard.html', albums = albums)
 	else:
 		msg = 'No Articles found'
-		return render_template('edit.html', msg = msg)
+		return render_template('dashboard.html', msg = msg)
 
 @app.route('/edit_album/<string:id>', methods=['GET', 'POST'])
 def edit_article(id):
@@ -111,8 +111,10 @@ def edit_article(id):
 		artist = request.form['artist']
 		name = request.form['name']
 		price = request.form['price']
+
 		saved = 0 if request.form['saved'] == None else 1
 		sold = 0 if request.form['sold'] == None else 1
+
 		info = request.form['info']
 
 		con = sql.connect("database/vinyl-catalox.db")
@@ -130,9 +132,9 @@ def edit_article(id):
 		con.commit()
 		con.close()
 
-		return redirect(url_for('edit'))
+		return redirect(url_for('dashboard'))
 
-	return render_template('edit_album.html', form=form)
+	return render_template('album_form.html', action="Edit", form = form)
 
 
 @app.route('/delete_album/<string:id>', methods=['POST'])
@@ -142,7 +144,7 @@ def delete_album(id):
 	cur.execute("DELETE FROM vinyl WHERE id=" + id)
 	con.commit()
 	cur.close()
-	return redirect(url_for('edit'))
+	return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
 	app.secret_key = 'thereisnothingtodo'
