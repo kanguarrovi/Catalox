@@ -1,7 +1,7 @@
 import sqlite3 as sql
 from flask import Flask, render_template, flash, redirect, url_for, request
 from database.connection import query_db
-from wtforms import Form, BooleanField, StringField, IntegerField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, PasswordField, validators
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -9,7 +9,7 @@ app = Flask(__name__, static_url_path='/static')
 @app.route('/')
 @app.route('/index')
 def index():
-	con = sql.connect("database/vinyl-catalox.db")
+	con = sql.connect("database/catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
 	cur.execute("select * from Vinyl")
@@ -23,7 +23,7 @@ def index():
 
 @app.route('/album/<string:id>')
 def album(id):
-	con = sql.connect("database/vinyl-catalox.db")
+	con = sql.connect("database/catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
 	cur.execute("SELECT * FROM Vinyl WHERE id =" + id)
@@ -36,7 +36,7 @@ class AlbumForm(Form):
 	#Image to consider
 	artist = StringField('Artist', [validators.Length(min=1)])
 	name = StringField('Album', [validators.Length(min=1)])
-	price = IntegerField('Price',[validators.NumberRange(min=0)])
+	price = FloatField('Price',[validators.NumberRange(min=0)])
 	saved = BooleanField('Saved')
 	sold = BooleanField('Sold')
 	info = StringField('Info')
@@ -52,7 +52,7 @@ def add_album():
 		sold = 1 if form.sold.data else 0
 		info = form.info.data
 
-		con = sql.connect("database/vinyl-catalox.db")
+		con = sql.connect("database/catalox.db")
 		cur = con.cursor()
 		cur.execute("INSERT INTO Vinyl(artist, name, price, saved, sold, info) VALUES('"
 			+ artist +"','"
@@ -64,27 +64,27 @@ def add_album():
 		)
 		con.commit()
 		con.close()
-		return redirect(url_for('index'))
-	return render_template('add_album.html', form = form)
+		return redirect(url_for('dashboard'))
+	return render_template('album_form.html', action="Add", form = form)
 
-@app.route('/edit')
-def edit():
-	con = sql.connect("database/vinyl-catalox.db")
+@app.route('/dashboard')
+def dashboard():
+	con = sql.connect("database/catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
 	cur.execute("SELECT * FROM Vinyl")
 	albums = cur.fetchall()
 	con.close()
 	if len(albums) > 0:
-		return render_template('edit.html', albums = albums)
+		return render_template('dashboard.html', albums = albums)
 	else:
 		msg = 'No Articles found'
-		return render_template('edit.html', msg = msg)
+		return render_template('dashboard.html', msg = msg)
 
 @app.route('/edit_album/<string:id>', methods=['GET', 'POST'])
 def edit_article(id):
 
-	con = sql.connect("database/vinyl-catalox.db")
+	con = sql.connect("database/catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
 	cur.execute("SELECT * FROM Vinyl WHERE id =" + id)
@@ -111,11 +111,13 @@ def edit_article(id):
 		artist = request.form['artist']
 		name = request.form['name']
 		price = request.form['price']
+
 		saved = 0 if request.form['saved'] == None else 1
 		sold = 0 if request.form['sold'] == None else 1
+
 		info = request.form['info']
 
-		con = sql.connect("database/vinyl-catalox.db")
+		con = sql.connect("database/catalox.db")
 		cur = con.cursor()
 
 		#Execute
@@ -130,19 +132,19 @@ def edit_article(id):
 		con.commit()
 		con.close()
 
-		return redirect(url_for('edit'))
+		return redirect(url_for('dashboard'))
 
-	return render_template('edit_album.html', form=form)
+	return render_template('album_form.html', action="Edit", form = form)
 
 
 @app.route('/delete_album/<string:id>', methods=['POST'])
 def delete_album(id):
-	con = sql.connect("database/vinyl-catalox.db")
+	con = sql.connect("database/catalox.db")
 	cur = con.cursor()
 	cur.execute("DELETE FROM vinyl WHERE id=" + id)
 	con.commit()
 	cur.close()
-	return redirect(url_for('edit'))
+	return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
 	app.secret_key = 'thereisnothingtodo'

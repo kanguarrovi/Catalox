@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <!-- Button trigger modal -->
+  <div align="right">
+    <!--<button type="button" class="btn btn-success right" data-toggle="modal" data-target="#exampleModal">
+      Add album
+    </button>-->
+    <a href="/add_album" class="btn btn-success right">Add album</a>
+  </div>
+
+  {% include 'modal.html' %}
+
+  <br>
+  <table class="table table-striped">
+    {% if albums %}
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Artist</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Saved</th>
+        <th>Sold</th>
+        <th>Info</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    {% endif %}
+    {% for album in albums %}
+        <tr>
+          <td>{{album.id}}</td>
+          <td>{{album.artist}}</td>
+          <td>{{album.name}}</td>
+          <td>{{album.price}}</td>
+          <td>{{album.saved}}</td>
+          <td>{{album.sold}}</td>
+          <td>{{album.info}}</td>
+          <td>
+            <form action="/edit_album/{{album.id}}" method="GET">
+              <input type="submit" class="btn btn-primary" value="Edit" />
+            </form>
+          </td>
+          <td>
+            <input type="submit" class="btn btn-danger" value="Delete" onclick="delete_file({{album.id}})" />
+          </td>
+        </tr>
+    {% endfor %}
+  </table>
+
+  <script type="text/javascript">
+    function delete_file(album_id){
+      swal({
+        title: "Delete album",
+        text: "Once deleted, you will not be able to recover this album information!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            type: "POST",
+            url: '/delete_album/' + album_id,
+          });
+          swal("Poof! The album has been deleted!", {
+            icon: "success",
+          });
+          /*This line must be deleted*/
+          window.location.reload();
+        } else {
+          swal("The album has not been deleted!");
+        }
+      });
+    }
+  </script>
+{% endblock %}

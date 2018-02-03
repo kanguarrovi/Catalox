@@ -6,7 +6,7 @@ from flask import g
 	#return create_engine('sqlite:////home/kangu/Escritorio/restful-project/interview_question/database/salaries.db')
 	return create_engine('sqlite:///' + os.getcwd() + '/vinyl-catalox.db')"""
 
-DATABASE = os.getcwd() + '/vinyl-catalox.db'
+DATABASE = os.getcwd() + '/catalox.db'
 
 def get_db():
     db = getattr(g, '_database', None)

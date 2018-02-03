@@ -5,7 +5,7 @@
     {% if albums %}
     <thead>
       <tr>
-        <th>ID</th>
+        <th></th>
         <th>Artist</th>
         <th>Name</th>
         <th>Price</th>
@@ -15,7 +15,7 @@
     {% for album in albums %}
       {% if not album.saved or album.sold %}
         <tr>
-          <td>{{album.id}}</td>
+          <td>{{ loop.index }}</td>
           <td>{{album.artist}}</td>
           <td>{{album.name}}</td>
           <td>{{album.price}}</td>

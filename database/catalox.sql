@@ -3,7 +3,7 @@ CREATE TABLE "Vinyl" (
 	"image" varchar(100) NULL,
 	"artist" varchar(100) NOT NULL,
 	"name" varchar(100) NOT NULL,
-	"price" integer NOT NULL,
+	"price" real NOT NULL,
 	"saved" bool NOT NULL DEFAULT 0,
 	"sold" bool NOT NULL DEFAULT 0,
 	"info" text NOT NULL DEFAULT ""
