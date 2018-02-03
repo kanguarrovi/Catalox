@@ -26,7 +26,11 @@
           <td>{{album.saved}}</td>
           <td>{{album.sold}}</td>
           <td>{{album.info}}</td>
-          <td><button type="button" class="btn btn-primary">Edit</button></td>
+          <td>
+            <form action="/edit_album/{{album.id}}" method="GET">
+              <input type="submit" class="btn btn-primary" value="Edit" />
+            </form>
+          </td>
           <td>
             <form action="/delete_album/{{album.id}}" method="POST">
               <input type="submit" class="btn btn-danger" value="Delete" />

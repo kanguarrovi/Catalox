@@ -29,7 +29,7 @@ def album(id):
 	cur.execute("SELECT * FROM Vinyl WHERE id =" + id)
 	album = cur.fetchone()
 	con.close()
-	return render_template('album.html', album = album)
+	return render_template('album.html', album=album)
 
 #Album form
 class AlbumForm(Form):
@@ -72,7 +72,7 @@ def edit():
 	con = sql.connect("database/vinyl-catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
-	cur.execute("select * from Vinyl")
+	cur.execute("SELECT * FROM Vinyl")
 	albums = cur.fetchall()
 	con.close()
 	if len(albums) > 0:
@@ -80,6 +80,59 @@ def edit():
 	else:
 		msg = 'No Articles found'
 		return render_template('edit.html', msg = msg)
+
+@app.route('/edit_album/<string:id>', methods=['GET', 'POST'])
+def edit_article(id):
+
+	con = sql.connect("database/vinyl-catalox.db")
+	con.row_factory = sql.Row
+	cur = con.cursor()
+	cur.execute("SELECT * FROM Vinyl WHERE id =" + id)
+
+	album = cur.fetchone()
+	con.close()
+
+	#Get form
+	form = AlbumForm(request.form)
+
+	#Populate article form fields
+
+	form.artist.data = album['artist']
+	form.name.data = album['name']
+	form.price.data = album['price']
+	form.saved.data = album['saved']
+	form.sold.data = album['sold']
+	form.info.data = album['info']
+
+	if request.method == 'POST' and form.validate():
+
+		print("This is the form", request.form)
+
+		artist = request.form['artist']
+		name = request.form['name']
+		price = request.form['price']
+		saved = 0 if request.form['saved'] == None else 1
+		sold = 0 if request.form['sold'] == None else 1
+		info = request.form['info']
+
+		con = sql.connect("database/vinyl-catalox.db")
+		cur = con.cursor()
+
+		#Execute
+		cur.execute("UPDATE Vinyl SET artist='"+ artist
+			+"', name='" + name 
+			+ "', price='" + str(price) 
+			+ "', saved='" + str(saved)
+			+ "', sold='" + str(sold) 
+			+ "', info='" + info +"' WHERE id=" + id)
+
+		#Commit to DB
+		con.commit()
+		con.close()
+
+		return redirect(url_for('edit'))
+
+	return render_template('edit_album.html', form=form)
 
 
 @app.route('/delete_album/<string:id>', methods=['POST'])
