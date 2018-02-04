@@ -4,9 +4,8 @@ CREATE TABLE "Vinyl" (
 	"artist" varchar(100) NOT NULL,
 	"name" varchar(100) NOT NULL,
 	"price" real NOT NULL,
-	"saved" bool NOT NULL DEFAULT 0,
-	"sold" bool NOT NULL DEFAULT 0,
+	"status" varchar(100) NOT NULL,
 	"info" text NOT NULL DEFAULT ""
 );
 
-INSERT INTO "Vinyl" (artist, name, price) VALUES ('Edge of Sanity','Crimson',27500);
+INSERT INTO "Vinyl" (artist, name, price, status) VALUES ('Edge of Sanity', 'Crimson', 49.95, 'ava');
