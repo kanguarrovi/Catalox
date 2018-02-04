@@ -92,7 +92,7 @@ def edit_article(id):
 	#Get form
 	form = AlbumForm(request.form)
 
-	#Populate article form fields
+	#Populate album form fields
 
 	form.artist.data = album['artist']
 	form.name.data = album['name']
@@ -100,18 +100,12 @@ def edit_article(id):
 	form.status.data = album['status']
 	form.info.data = album['info']
 
-	print("Album values:", album['artist'], album['name'], album['price'], album['status'], album['info'])
-
 	if request.method == 'POST' and form.validate():
-
-		print("This is the form", request.form)
 
 		artist = request.form['artist']
 		name = request.form['name']
 		price = request.form['price']
-
 		status = request.form['status']
-
 		info = request.form['info']
 
 		con = sql.connect("database/catalox.db")

@@ -13,14 +13,12 @@
     </thead>
     {% endif %}
     {% for album in albums %}
-      
         <tr>
           <td>{{ loop.index }}</td>
           <td>{{album.artist}}</td>
           <td>{{album.name}}</td>
           <td>{{album.price}}</td>
         </tr>
-
     {% endfor %}
   </table>
 
