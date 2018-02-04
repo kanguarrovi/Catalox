@@ -13,14 +13,14 @@
     </thead>
     {% endif %}
     {% for album in albums %}
-      {% if not album.saved or album.sold %}
+      
         <tr>
           <td>{{ loop.index }}</td>
           <td>{{album.artist}}</td>
           <td>{{album.name}}</td>
           <td>{{album.price}}</td>
         </tr>
-      {% endif %}
+
     {% endfor %}
   </table>
 

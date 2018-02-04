@@ -1,7 +1,7 @@
 import sqlite3 as sql
 from flask import Flask, render_template, flash, redirect, url_for, request
 from database.connection import query_db
-from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, SelectField, PasswordField, validators
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -12,7 +12,7 @@ def index():
 	con = sql.connect("database/catalox.db")
 	con.row_factory = sql.Row
 	cur = con.cursor()
-	cur.execute("select * from Vinyl")
+	cur.execute("SELECT * FROM Vinyl WHERE status='ava'")
 	albums = cur.fetchall()
 	con.close()
 	if len(albums) > 0:
@@ -37,8 +37,7 @@ class AlbumForm(Form):
 	artist = StringField('Artist', [validators.Length(min=1)])
 	name = StringField('Album', [validators.Length(min=1)])
 	price = FloatField('Price',[validators.NumberRange(min=0)])
-	saved = BooleanField('Saved')
-	sold = BooleanField('Sold')
+	status = SelectField('Status', choices=[('ava', 'Available'), ('sav', 'Saved'), ('sld', 'Sold')])
 	info = StringField('Info')
 
 @app.route('/add_album', methods=['GET', 'POST'])
@@ -48,18 +47,16 @@ def add_album():
 		artist = form.artist.data
 		name = form.name.data
 		price = form.price.data
-		saved = 1 if form.saved.data else 0
-		sold = 1 if form.sold.data else 0
+		status = form.status.data
 		info = form.info.data
 
 		con = sql.connect("database/catalox.db")
 		cur = con.cursor()
-		cur.execute("INSERT INTO Vinyl(artist, name, price, saved, sold, info) VALUES('"
+		cur.execute("INSERT INTO Vinyl(artist, name, price, status, info) VALUES('"
 			+ artist +"','"
 			+ name + "',"
-			+ str(price) + ","
-			+ str(saved) + ","
-			+ str(sold) + ","
+			+ str(price) + ",'"
+			+ status + "',"
 			+ "'" + info + "')"
 		)
 		con.commit()
@@ -100,9 +97,10 @@ def edit_article(id):
 	form.artist.data = album['artist']
 	form.name.data = album['name']
 	form.price.data = album['price']
-	form.saved.data = album['saved']
-	form.sold.data = album['sold']
+	form.status.data = album['status']
 	form.info.data = album['info']
+
+	print("Album values:", album['artist'], album['name'], album['price'], album['status'], album['info'])
 
 	if request.method == 'POST' and form.validate():
 
@@ -112,8 +110,7 @@ def edit_article(id):
 		name = request.form['name']
 		price = request.form['price']
 
-		saved = 0 if request.form['saved'] == None else 1
-		sold = 0 if request.form['sold'] == None else 1
+		status = request.form['status']
 
 		info = request.form['info']
 
@@ -124,8 +121,7 @@ def edit_article(id):
 		cur.execute("UPDATE Vinyl SET artist='"+ artist
 			+"', name='" + name 
 			+ "', price='" + str(price) 
-			+ "', saved='" + str(saved)
-			+ "', sold='" + str(sold) 
+			+ "', status='" + str(status)
 			+ "', info='" + info +"' WHERE id=" + id)
 
 		#Commit to DB
