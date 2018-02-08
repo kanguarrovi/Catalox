@@ -3,23 +3,24 @@
 {% block body %}
   <table class="table table-striped">
     {% if albums %}
-    <thead>
-      <tr>
-        <th></th>
-        <th>Artist</th>
-        <th>Name</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    {% endif %}
-    {% for album in albums %}
+      <thead>
         <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{album.artist}}</td>
-          <td>{{album.name}}</td>
-          <td>{{album.price}}</td>
+          <th></th>
+          <th>Artist</th>
+          <th>Name</th>
+          <th>Price</th>
         </tr>
-    {% endfor %}
+      </thead>
+      <tbody>
+        {% for album in albums %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{album.artist}}</td>
+            <td>{{album.name}}</td>
+            <td>{{album.price}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    {% endif %}
   </table>
-
 {% endblock %}

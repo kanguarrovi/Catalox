@@ -1,5 +1,5 @@
 import sqlite3 as sql
-from flask import Flask, render_template, flash, redirect, url_for, request
+from flask import Flask, render_template, flash, redirect, url_for, request, jsonify
 from database.connection import query_db
 from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, SelectField, PasswordField, validators
 
@@ -72,6 +72,9 @@ def dashboard():
 	cur.execute("SELECT * FROM Vinyl")
 	albums = cur.fetchall()
 	con.close()
+
+	print((albums))
+
 	if len(albums) > 0:
 		return render_template('dashboard.html', albums = albums)
 	else:
