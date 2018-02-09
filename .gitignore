@@ -1,3 +1,5 @@
-flask
+catalox
+migrations
 *.pyc
 __pycache__
+catalox.db

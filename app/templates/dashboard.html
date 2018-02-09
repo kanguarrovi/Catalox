@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <!-- Button trigger modal -->
+  <div align="right">
+    <!--<button type="button" class="btn btn-success right" data-toggle="modal" data-target="#exampleModal">
+      Add album
+    </button>-->
+    <a href="/add_album" class="btn btn-success right">Add album</a>
+  </div>
+
+  {% include 'modal.html' %}
+
+  <br>
+  <div class="table-responsive">
+    <table id=table_albums_dashboard class="table table-striped">
+        {% if albums %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Artist</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for album in albums %}
+            <tr>
+                <td>{{album.id}}</td>
+                <td>{{album.artist}}</td>
+                <td>{{album.name}}</td>
+                <td>{{album.price}}</td>
+                <td>{{album.status}}</td>
+                <td>
+                    <form action="/edit_album/{{album.id}}" method="GET">
+                        <input type="submit" class="btn btn-primary" value="Edit"/>
+                    </form>
+                </td>
+                <td>
+                    <input type="submit" class="btn btn-danger" value="Delete" onclick="delete_file({{ album.id }})" />
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endif %}
+    </table>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% endblock %}
