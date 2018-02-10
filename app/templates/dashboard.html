@@ -38,11 +38,11 @@
                 <td>{{album.status}}</td>
                 <td>
                     <form action="/edit_album/{{album.id}}" method="GET">
-                        <input type="submit" class="btn btn-primary" value="Info"/>
+                        <input type="submit" class="btn btn-primary btn-block" value="Info"/>
                     </form>
                 </td>
                 <td>
-                    <input type="submit" class="btn btn-danger" value="Delete" onclick="delete_file({{ album.id }})" />
+                    <input type="submit" class="btn btn-danger btn-block" value="Delete" onclick="delete_file({{ album.id }})" />
                 </td>
             </tr>
             {% endfor %}
