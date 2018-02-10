@@ -13,11 +13,6 @@ def index():
 		msg = 'No Articles found'
 		return render_template('index.html', msg=msg)
 
-@app.route('/album/<string:id>')
-def album(id):
-	album = Vinyl.query.get(id)
-	return render_template('album.html', album=album)
-
 @app.route('/add_album', methods=['GET', 'POST'])
 def add_album():
 	form = AlbumForm(request.form)
@@ -46,7 +41,7 @@ def dashboard():
 		return render_template('dashboard.html', msg = msg)
 
 @app.route('/edit_album/<string:id>', methods=['GET', 'POST'])
-def edit_article(id):
+def edit_album(id):
 	album = Vinyl.query.get(id)
 
 	#Get form
@@ -71,7 +66,7 @@ def edit_article(id):
 
 		return redirect(url_for('dashboard'))
 
-	return render_template('album_form.html', action="Edit", form = form)
+	return render_template('album_form.html', action="Info", form = form)
 
 @app.route('/delete_album/<string:id>', methods=['POST'])
 def delete_album(id):
