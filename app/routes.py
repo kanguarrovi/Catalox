@@ -1,5 +1,7 @@
+import pdfkit
+import datetime
 from app import app, db
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, make_response
 from .models import Vinyl
 from .forms import AlbumForm
 
@@ -74,3 +76,34 @@ def delete_album(id):
 	db.session.delete(album)
 	db.session.commit()
 	return redirect(url_for('dashboard'))
+
+@app.route('/gen_list')
+def pdf_template():
+	options = {
+		'page-size': 'A4',
+		'margin-top': '0.75in',
+		'margin-right': '0.75in',
+		'margin-bottom': '0.75in',
+		'margin-left': '0.75in',
+	}
+	albums = Vinyl.query.all()
+	date = datetime.datetime.now()
+
+	rendered = render_template('pdf_format.html', albums = albums)
+
+	name = "catalox-list-" + date.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf"
+
+	pdf = pdfkit.from_string(rendered, False, options = options)
+	response = make_response(pdf)
+	response.headers['Content-Type'] = 'application/pdf'
+	response.headers['Content-Disposition'] = 'attachment; filename=%s' % name
+	return response
+
+@app.route('/view_list')
+def index2():
+	albums = Vinyl.query.all()
+	if len(albums) > 0:
+		return render_template('pdf_format.html', albums = albums)
+	else:
+		msg = 'No Articles found'
+		return render_template('pdf_format.html', msg = msg)

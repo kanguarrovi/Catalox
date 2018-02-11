@@ -1,0 +1,31 @@
+<html>
+    <head>
+    </head>
+    <body>
+        
+        <div class="table-responsive">
+            <center><table class="table table-striped">
+                {% if albums %}
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Artist</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for album in albums %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{album.artist}}</td>
+                        <td>{{album.name}}</td>
+                        <td>{{album.price}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                {% endif %}
+            </table></center>
+        </div>
+    </body>
+</html>
