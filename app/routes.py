@@ -8,7 +8,7 @@ from .forms import AlbumForm
 @app.route('/')
 @app.route('/index')
 def index():
-	albums = Vinyl.query.all()
+	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	if len(albums) > 0:
 		return render_template('index.html', albums=albums)
 	else:
@@ -35,7 +35,7 @@ def add_album():
 
 @app.route('/dashboard')
 def dashboard():
-	albums = Vinyl.query.all()
+	albums = Vinyl.query.order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	if len(albums) > 0:
 		return render_template('dashboard.html', albums = albums)
 	else:
@@ -87,7 +87,7 @@ def pdf_template():
 		'margin-left': '0.75in',
 	}
 
-	albums = Vinyl.query.all()
+	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	
 	date = datetime.datetime.now()
 
@@ -101,12 +101,3 @@ def pdf_template():
 	name = "catalox-list-" + date.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf"
 	response.headers['Content-Disposition'] = 'attachment; filename=%s' % name
 	return response
-
-@app.route('/view_list')
-def index2():
-	albums = Vinyl.query.all()
-	if len(albums) > 0:
-		return render_template('pdf_format.html', albums = albums)
-	else:
-		msg = 'No Articles found'
-		return render_template('pdf_format.html', msg = msg)
