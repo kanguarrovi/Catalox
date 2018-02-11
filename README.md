@@ -5,7 +5,7 @@ Catalox: a simple vinyl catalog.
 ### What is this repository for? ###
 
 * Quick summary
-* Version: 0.0
+* Version: 1.0
 
 # Installation 
 

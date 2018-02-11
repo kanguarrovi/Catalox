@@ -1,12 +1,14 @@
+import pdfkit
+import datetime
 from app import app, db
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, make_response
 from .models import Vinyl
 from .forms import AlbumForm
 
 @app.route('/')
 @app.route('/index')
 def index():
-	albums = Vinyl.query.all()
+	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	if len(albums) > 0:
 		return render_template('index.html', albums=albums)
 	else:
@@ -33,7 +35,7 @@ def add_album():
 
 @app.route('/dashboard')
 def dashboard():
-	albums = Vinyl.query.all()
+	albums = Vinyl.query.order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	if len(albums) > 0:
 		return render_template('dashboard.html', albums = albums)
 	else:
@@ -74,3 +76,28 @@ def delete_album(id):
 	db.session.delete(album)
 	db.session.commit()
 	return redirect(url_for('dashboard'))
+
+@app.route('/gen_list')
+def pdf_template():
+	options = {
+		'page-size': 'A4',
+		'margin-top': '0.75in',
+		'margin-right': '0.75in',
+		'margin-bottom': '0.75in',
+		'margin-left': '0.75in',
+	}
+
+	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
+	
+	date = datetime.datetime.now()
+
+	date_doc = date.strftime("%Y-%m-%d %H:%M:%S")
+
+	rendered = render_template('pdf_format.html', albums=albums, date=date_doc)
+	pdf = pdfkit.from_string(rendered, False, options=options)
+	response = make_response(pdf)
+	response.headers['Content-Type'] = 'application/pdf'
+
+	name = "catalox-list-" + date.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf"
+	response.headers['Content-Disposition'] = 'attachment; filename=%s' % name
+	return response

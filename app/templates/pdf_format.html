@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <center><strong>Catalox</strong></center>
+        <br>
+        <table style="width: 100%;" align="center" >
+            {% if albums %}
+            <tr>
+                <td></td>
+                <td><strong>Artist</strong></td>
+                <td><strong>Name</strong></td>
+                <td><strong>Price</strong></td>
+            </tr>
+            {% for album in albums %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{album.artist}}</td>
+                <td>{{album.name}}</td>
+                <td>{{album.price}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </table>
+        <p align="right"><small>Date: {{ date }}</small></p>
+    </body>
+</html>
