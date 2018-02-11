@@ -86,16 +86,19 @@ def pdf_template():
 		'margin-bottom': '0.75in',
 		'margin-left': '0.75in',
 	}
+
 	albums = Vinyl.query.all()
+	
 	date = datetime.datetime.now()
 
-	rendered = render_template('pdf_format.html', albums = albums)
+	date_doc = date.strftime("%Y-%m-%d %H:%M:%S")
 
-	name = "catalox-list-" + date.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf"
-
-	pdf = pdfkit.from_string(rendered, False, options = options)
+	rendered = render_template('pdf_format.html', albums=albums, date=date_doc)
+	pdf = pdfkit.from_string(rendered, False, options=options)
 	response = make_response(pdf)
 	response.headers['Content-Type'] = 'application/pdf'
+
+	name = "catalox-list-" + date.strftime("%Y-%m-%d-%H-%M-%S") + ".pdf"
 	response.headers['Content-Disposition'] = 'attachment; filename=%s' % name
 	return response
 
