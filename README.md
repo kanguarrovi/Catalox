@@ -19,6 +19,10 @@ Create a virtualenv
 	$ python3 -m venv catalox
 	$ source catalox/bin/activate
 
+Upgrade pip if it is needed 
+
+	$ pip install --upgrade pip
+
 Install requirements 
 
 	$ pip install -r requirements.txt
