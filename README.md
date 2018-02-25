@@ -13,13 +13,13 @@ Clone this repository
 
 	$ git clone https://github.com/kanguarrovi/catalox.git
 
-Create a virtualenv:(on Debian based Linux)
+Create a virtualenv (on Debian based Linux)
 
     $ cd catalox
 	$ python3 -m venv catalox
 	$ source catalox/bin/activate
 
-Create a virtualenv(on Windows)
+Create a virtualenv (on Windows)
 
     $ C:\Users\Name>cd catalox
 	$ C:\Users\Name\catalox> C:\Python35\python -m venv catalox
