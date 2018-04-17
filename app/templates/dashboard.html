@@ -35,7 +35,9 @@
                 <td>{{album.artist}}</td>
                 <td>{{album.name}}</td>
                 <td>{{album.price}}</td>
-                <td>{{album.status}}</td>
+                <td>
+                    {{album.status}}                
+                </td>
                 <td>
                     <form action="/edit_album/{{album.id}}" method="GET">
                         <input type="submit" class="btn btn-primary btn-block" value="Info"/>

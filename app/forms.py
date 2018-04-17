@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 #from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, SelectField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, IntegerField, FloatField, SelectField, PasswordField, TextAreaField, validators
 from wtforms.validators import DataRequired
 
 """class LoginForm(FlaskForm):
@@ -15,4 +15,5 @@ class AlbumForm(Form):
 	name = StringField('Album', [validators.Length(min=1)])
 	price = FloatField('Price',[validators.NumberRange(min=0)])
 	status = SelectField('Status', choices=[('ava', 'Available'), ('sav', 'Saved'), ('sld', 'Sold')])
-	info = StringField('Info')
+	#info = StringField('Info')
+	info = TextAreaField('Info')
