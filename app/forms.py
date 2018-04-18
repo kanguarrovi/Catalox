@@ -14,6 +14,6 @@ class AlbumForm(Form):
 	artist = StringField('Artist', [validators.Length(min=1)])
 	name = StringField('Album', [validators.Length(min=1)])
 	price = FloatField('Price',[validators.NumberRange(min=0)])
-	status = SelectField('Status', choices=[('ava', 'Available'), ('sav', 'Saved'), ('sld', 'Sold')])
+	status = SelectField('Status', choices=[('Available', 'Available'), ('Saved', 'Saved'), ('Sold', 'Sold')])
 	#info = StringField('Info')
 	info = TextAreaField('Info')

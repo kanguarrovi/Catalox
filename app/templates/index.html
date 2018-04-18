@@ -2,9 +2,11 @@
 
 {% block body %}
 
-<div align="right">
-    <a href="/gen_list" class="btn btn-default right">Generate PDF</a>
-</div>
+{% if albums %}
+  <div align="right">
+      <a href="/gen_list" class="btn btn-default right" data-role="disabled">Generate PDF</a>
+  </div>
+{% endif %}
 
 <br>
 
@@ -32,4 +34,5 @@
     {% endif %}
   </table>
 </div>
+
 {% endblock %}

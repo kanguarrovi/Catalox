@@ -8,7 +8,7 @@ from .forms import AlbumForm
 @app.route('/')
 @app.route('/index')
 def index():
-	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
+	albums = Vinyl.query.filter_by(status='Available').order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	if len(albums) > 0:
 		return render_template('index.html', albums=albums)
 	else:
@@ -87,7 +87,7 @@ def pdf_template():
 		'margin-left': '0.75in',
 	}
 
-	albums = Vinyl.query.filter_by(status='ava').order_by(Vinyl.artist).order_by(Vinyl.name).all()
+	albums = Vinyl.query.filter_by(status='Available').order_by(Vinyl.artist).order_by(Vinyl.name).all()
 	
 	date = datetime.datetime.now()
 
